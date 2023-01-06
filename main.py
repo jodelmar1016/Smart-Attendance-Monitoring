@@ -3,6 +3,7 @@ import cv2
 from PIL import Image, ImageTk
 from datetime import datetime
 from attendance import recordAttendance
+from logo import addLogo
 
 root = Tk()
 root.title("ATTENDANCE MONITORING SYSTEM")
@@ -17,9 +18,7 @@ def openCamera():
     while True:
         ret, frame = video.read()
 
-        now = datetime.now()
-        dt_string = now.strftime("%d-%m-%Y %H:%M:%S")
-        cv2.putText(frame, dt_string, (10,20), fontFace=cv2.FONT_HERSHEY_PLAIN, fontScale=1, color=(0,0,255), thickness=1, lineType=cv2.LINE_AA)
+        addLogo(frame)
         cv2.imshow("Camera", frame)
 
         if cv2.waitKey(1) & 0xFF == ord('c'):
