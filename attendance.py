@@ -2,6 +2,8 @@ import cv2
 import face_recognition as fr
 from datetime import datetime
 import os
+from logo import addLogo
+from voice import sayName
 
 path = "./images/"
 known_face_names = []
@@ -29,8 +31,11 @@ def recordAttendance():
         face_location = fr.face_locations(frame)
 
         for top, right, bottom, left in face_location:
-            cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+            cv2.rectangle(frame, (left, top), (right, bottom), (100,191,105), 2)
 
+        date_and_time = now.strftime("%H:%M:%S")
+        addLogo(frame)
+        cv2.putText(frame, date_and_time, (80,20), fontFace=cv2.FONT_HERSHEY_PLAIN, fontScale=1, color=(100,191,105), thickness=1, lineType=cv2.LINE_AA)
         cv2.imshow("Camera", frame)
         # resize the frame
         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
@@ -45,13 +50,14 @@ def recordAttendance():
             if True in matches:
                 first_match_index = matches.index(True)
                 name = known_face_names[first_match_index]
+                sayName(name)
                 result.append((name, dt_string))
                 known_face_names.pop(first_match_index)
                 known_face_encodings.pop(first_match_index)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-    # print(result)
+        
     video.release()
     cv2.destroyAllWindows()
     return result
