@@ -7,4 +7,5 @@ engine.setProperty('voice', voices[1].id)
 
 def sayName(name):
     engine.say(name)
+    engine.say("Thank You!")
     engine.runAndWait()
