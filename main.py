@@ -1,5 +1,7 @@
 from tkinter import *
+from tkinter import messagebox
 import cv2
+import os
 from PIL import Image, ImageTk
 from datetime import datetime
 from attendance import recordAttendance
@@ -14,27 +16,47 @@ root.iconbitmap('assets/logo.ico')
 # -----------------------------------------------------
 # Functions
 def openCamera():
-    video = cv2.VideoCapture(0)
-    while True:
-        ret, frame = video.read()
+    if len(name_input.get())==0:
+        messagebox.showerror("Error", "Please input name")
+        return
+    try:
+        int(name_input.get())
+        messagebox.showerror("Error", "Please enter a valid name!")
+        return
+    except:
+        path = "./images/"
+        registered_names = []
+        name_inp=name_input.get().upper()
 
-        addLogo(frame)
-        cv2.imshow("Camera", frame)
+        names = os.listdir(path)
+        for name in names:
+            name_path = path + name
+            registered_names.append(os.path.splitext(os.path.basename(name_path))[0].upper())
 
-        if cv2.waitKey(1) & 0xFF == ord('c'):
-            cv2.imwrite("images/"+ name_input.get() +".jpg",frame)
-            output_message.configure(text="Successfully Registered")
-            bot_item_reg.pack_forget()
-            bot_item_attendance.pack()
-            break
-        
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            bot_item_attendance.pack_forget()
-            bot_item_reg.pack()
-            break
+        if name_inp not in registered_names:
+            video = cv2.VideoCapture(0)
+            while True:
+                ret, frame = video.read()
 
-    video.release()
-    cv2.destroyAllWindows()
+                addLogo(frame)
+                cv2.imshow("Camera", frame)
+
+                if cv2.waitKey(1) & 0xFF == ord('c'):
+                    cv2.imwrite("images/"+ name_input.get() +".jpg",frame)
+                    output_message.configure(text="Successfully Registered")
+                    bot_item_reg.pack_forget()
+                    bot_item_attendance.pack()
+                    break
+                
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    bot_item_attendance.pack_forget()
+                    bot_item_reg.pack()
+                    break
+
+            video.release()
+            cv2.destroyAllWindows()
+        else:
+            messagebox.showinfo("Message", "Already Registered!")
 
 def register():
     bot_item_reg.pack()
