@@ -1,9 +1,9 @@
 # Smart-Attendance-Monitoring
 
 ## Screenshots
-<img src="screenshots/home.png" width="250">
-<img src="screenshots/register.png" width="250">
-<img src="screenshots/Successful%registrationn.png" width="250">
+<img src="screenshots/home.png" width="350">
+<img src="screenshots/register.png" width="350">
+<img src="screenshots/successful_registration.png" width="350">
 
 ## Contributors
 + Kaezza Dianara Battuing
